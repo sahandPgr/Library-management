@@ -24,4 +24,8 @@ public class CategoryService {
     repository.save(category);
 }
 
+    public Category getCategoryById(Long id) {
+    return repository.findById(id).orElse(null);
+}
+
 }
