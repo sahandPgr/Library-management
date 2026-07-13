@@ -11,39 +11,42 @@
 
 <body>
 
-<div class="container mt-5">
+    <div class="container mt-5">
 
-    <h2>Categories</h2>
+        <h2>Categories</h2>
 
-    <table class="table table-bordered">
+        <a href="/categories/new" class="btn btn-primary mb-3">
+            Add Category
+        </a>
+        <table class="table table-bordered">
 
-        <thead>
+            <thead>
 
-        <tr>
+                <tr>
 
-            <th>ID</th>
+                    <th>ID</th>
 
-            <th>Name</th>
+                    <th>Name</th>
 
-        </tr>
+                </tr>
 
-        </thead>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-        <tr th:each="category : ${categories}">
+                <tr th:each="category : ${categories}">
 
-            <td th:text="${category.id}"></td>
+                    <td th:text="${category.id}"></td>
 
-            <td th:text="${category.name}"></td>
+                    <td th:text="${category.name}"></td>
 
-        </tr>
+                </tr>
 
-        </tbody>
+            </tbody>
 
-    </table>
+        </table>
 
-</div>
+    </div>
 
 </body>
 

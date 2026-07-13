@@ -3,9 +3,11 @@ package library_management.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import library_management.entity.Category;
 import library_management.service.CategoryService;
-
 @Controller
 public class CategoryController {
 
@@ -22,5 +24,21 @@ public class CategoryController {
 
         return "categories";
     }
+
+    @GetMapping("/categories/new")
+    public String showCreateForm(Model model) {
+
+        model.addAttribute("category", new Category());
+
+        return "category-form";
+    }
+
+    @PostMapping("/categories")
+public String saveCategory(@ModelAttribute("category") Category category) {
+
+    service.saveCategory(category);
+
+    return "redirect:/categories";
+}
 
 }
