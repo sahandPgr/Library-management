@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Book Form</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <h2>Book Form</h2>
+
+    <form th:action="@{/books}" th:object="${book}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+
+            <input
+                    type="text"
+                    class="form-control"
+                    th:field="*{title}"
+                    required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">ISBN</label>
+
+            <input
+                    type="text"
+                    class="form-control"
+                    th:field="*{isbn}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Publish Year</label>
+
+            <input
+                    type="number"
+                    class="form-control"
+                    th:field="*{publishYear}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Quantity</label>
+
+            <input
+                    type="number"
+                    class="form-control"
+                    min="1"
+                    th:field="*{quantity}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Available Quantity</label>
+
+            <input
+                    type="number"
+                    class="form-control"
+                    min="0"
+                    th:field="*{availableQuantity}">
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">Author</label>
+
+            <select
+                    class="form-select"
+                    th:field="*{authorId}"
+                    required>
+
+                <option value="">Select Author</option>
+
+                <option
+                        th:each="author : ${authors}"
+                        th:value="${author.id}"
+                        th:text="${author.fullName}">
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">Publisher</label>
+
+            <select
+                    class="form-select"
+                    th:field="*{publisherId}"
+                    required>
+
+                <option value="">Select Publisher</option>
+
+                <option
+                        th:each="publisher : ${publishers}"
+                        th:value="${publisher.id}"
+                        th:text="${publisher.name}">
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">Category</label>
+
+            <select
+                    class="form-select"
+                    th:field="*{categoryId}"
+                    required>
+
+                <option value="">Select Category</option>
+
+                <option
+                        th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}">
+                </option>
+
+            </select>
+
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Save
+        </button>
+
+        <a href="/books" class="btn btn-secondary">
+            Back
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>
