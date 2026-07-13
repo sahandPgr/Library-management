@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Publishers</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+
+        <h2>Publishers</h2>
+
+        <a href="/" class="btn btn-secondary mb-3">Home</a>
+
+        <a href="/publishers/new" class="btn btn-primary mb-3">
+            Add Publisher
+        </a>
+        <div th:if="${error}" class="alert alert-danger">
+
+            <span th:text="${error}"></span>
+
+        </div>
+        <table class="table table-bordered">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr th:each="publisher : ${publishers}">
+
+                    <td th:text="${publisher.id}"></td>
+                    <td th:text="${publisher.name}"></td>
+                    <td th:text="${publisher.address}"></td>
+                    <td th:text="${publisher.phone}"></td>
+
+                    <td>
+
+                        <a th:href="@{/publishers/edit/{id}(id=${publisher.id})}" class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <a th:href="@{/publishers/delete/{id}(id=${publisher.id})}" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Delete this publisher?')">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</body>
+
+</html>
