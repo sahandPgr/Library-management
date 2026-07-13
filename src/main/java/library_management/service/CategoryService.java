@@ -28,4 +28,7 @@ public class CategoryService {
     return repository.findById(id).orElse(null);
 }
 
+    public void deleteCategory(Long id) {
+    repository.deleteById(id);
+}
 }

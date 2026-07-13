@@ -52,4 +52,11 @@ public String showEditForm(@PathVariable Long id, Model model) {
     return "category-form";
 }
 
+    @GetMapping("/categories/delete/{id}")
+public String deleteCategory(@PathVariable Long id) {
+
+    service.deleteCategory(id);
+
+    return "redirect:/categories";
+}
 }
