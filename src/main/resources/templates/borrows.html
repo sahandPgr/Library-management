@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Borrows</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+<div class="container mt-5">
+
+
+<h2>Borrow List</h2>
+
+
+<a href="/borrows/new"
+   class="btn btn-primary mb-3">
+
+Add Borrow
+
+</a>
+
+
+
+<table class="table table-bordered">
+
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>User</th>
+<th>Book</th>
+<th>Borrow Date</th>
+<th>Due Date</th>
+<th>Return Date</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+<tr th:each="borrow:${borrows}">
+
+
+<td th:text="${borrow.id}"></td>
+
+
+<td th:text="${borrow.user.fullname}"></td>
+
+
+<td th:text="${borrow.book.title}"></td>
+
+
+<td th:text="${borrow.borrowDate}"></td>
+
+
+<td th:text="${borrow.dueDate}"></td>
+
+
+<td th:text="${borrow.returnDate}"></td>
+
+
+<td th:text="${borrow.status}"></td>
+
+
+<td>
+
+    <a th:if="${borrow.status.name() == 'BORROWED'}"
+       class="btn btn-success btn-sm"
+       th:href="@{/borrows/return/{id}(id=${borrow.id})}">
+
+        Return
+
+    </a>
+
+
+    <a class="btn btn-danger btn-sm"
+       th:href="@{/borrows/delete/{id}(id=${borrow.id})}">
+
+        Delete
+
+    </a>
+
+</td>
+
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</body>
+
+</html>

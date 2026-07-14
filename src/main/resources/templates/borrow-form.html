@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Borrow Form</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+<div class="container mt-5">
+
+
+<h2>Borrow Book</h2>
+
+<div th:if="${error}" class="alert alert-danger">
+    <span th:text="${error}"></span>
+</div>
+
+<form th:action="@{/borrows}" 
+      th:object="${borrow}" 
+      method="post">
+
+
+
+<div class="mb-3">
+
+<label>User</label>
+
+<select class="form-select"
+        th:field="*{userId}">
+
+
+<option value="">
+Select User
+</option>
+
+
+<option th:each="user:${users}"
+        th:value="${user.id}"
+        th:text="${user.fullname}">
+</option>
+
+
+</select>
+
+</div>
+
+
+
+<div class="mb-3">
+
+<label>Book</label>
+
+<select class="form-select"
+        th:field="*{bookId}">
+
+
+<option value="">
+Select Book
+</option>
+
+
+<option th:each="book:${books}"
+        th:value="${book.id}"
+        th:text="${book.title}">
+</option>
+
+
+</select>
+
+</div>
+
+
+
+<div class="mb-3">
+
+<label>Borrow Date</label>
+
+<input type="date"
+       class="form-control"
+       th:field="*{borrowDate}">
+
+</div>
+
+
+
+<div class="mb-3">
+
+<label>Due Date</label>
+
+<input type="date"
+       class="form-control"
+       th:field="*{dueDate}">
+
+</div>
+
+
+
+<button class="btn btn-success">
+
+Save
+
+</button>
+
+
+</form>
+
+
+</div>
+
+
+</body>
+
+</html>
