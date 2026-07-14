@@ -16,9 +16,9 @@ public class BookService {
         this.repository = repository;
     }
 
-    public List<Book> getAllBooks() {
-        return repository.findAll();
-    }
+  public List<Book> getAvailableBooks() {
+    return repository.findByAvailableQuantityGreaterThan(0);
+}
 
     public void saveBook(Book book) {
         repository.save(book);

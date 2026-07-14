@@ -55,7 +55,7 @@ public class BookController {
     @GetMapping("/books")
     public String books(Model model) {
 
-        model.addAttribute("books", bookService.getAllBooks());
+        model.addAttribute("books", bookService.getAvailableBooks());
 
         return "books";
     }
