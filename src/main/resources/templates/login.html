@@ -40,7 +40,12 @@
                         Invalid email or password.
 
                     </div>
+       <div th:if="${param.student}"
+     class="alert alert-warning">
 
+    Student accounts are not allowed to access the Library Management System.
+
+</div>
                     <div th:if="${param.logout}"
                          class="alert alert-success">
 

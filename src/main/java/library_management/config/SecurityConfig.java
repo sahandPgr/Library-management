@@ -8,15 +8,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import library_management.security.CustomAuthenticationFailureHandler;
 import library_management.service.CustomUserDetailsService;
 
 @Configuration
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
-
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+        private final CustomAuthenticationFailureHandler failureHandler;
+    public SecurityConfig(CustomUserDetailsService userDetailsService, CustomAuthenticationFailureHandler failureHandler) {
         this.userDetailsService = userDetailsService;
+        this.failureHandler = failureHandler;
     }
 
     @Bean
@@ -67,7 +69,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
 
                         .loginPage("/login")
-
+                        .failureHandler(failureHandler)
                         .defaultSuccessUrl("/", true)
 
                         .permitAll()
