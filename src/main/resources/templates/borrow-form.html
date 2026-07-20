@@ -24,11 +24,12 @@
     <span th:text="${error}"></span>
 </div>
 
-<form th:action="@{/borrows}" 
+<form th:action="@{/borrows/save}" 
       th:object="${borrow}" 
       method="post">
 
-
+<input type="hidden"
+       th:field="*{id}">
 
 <div class="mb-3">
 
@@ -104,12 +105,14 @@ Select Book
 
 
 
-<button class="btn btn-success">
+<button type="submit" class="btn btn-success">
 
 Save
 
 </button>
-
+<a href="/borrows" class="btn btn-secondary">
+            Back
+        </a>
 
 </form>
 

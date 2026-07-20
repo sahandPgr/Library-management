@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
 
@@ -8,8 +7,7 @@
 
     <title>Dashboard</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
@@ -17,141 +15,124 @@
 <body class="bg-light">
 
 
-<!-- Navbar -->
-
-<div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 
+    <div class="container mt-4">
 
-<div class="container mt-4">
+        <div th:replace="~{fragments/alerts :: alerts}"></div>
 
+        <div class="mb-4">
 
-    <!-- Header -->
+            <h2>
+                Library Dashboard
+            </h2>
 
-    <div class="mb-4">
-
-        <h2>
-            Library Dashboard
-        </h2>
-
-        <p class="text-muted">
-            Welcome to Library Management System
-        </p>
-
-    </div>
-
-
-
-
-    <!-- Statistics Cards -->
-
-    <div class="row g-4">
-
-
-        <!-- Books -->
-
-        <div class="col-md-4">
-
-            <div class="card shadow-sm">
-
-                <div class="card-body">
-
-                    <h5 class="card-title">
-                        📚 Books
-                    </h5>
-
-
-                    <h2 th:text="${bookCount}">
-                        0
-                    </h2>
-
-
-                    <a href="/books"
-                       class="btn btn-outline-primary btn-sm">
-
-                        View Books
-
-                    </a>
-
-
-                </div>
-
-            </div>
+            <p class="text-muted">
+                Welcome to Library Management System
+            </p>
 
         </div>
 
 
 
 
-        <!-- Users -->
-
-        <div class="col-md-4">
-
-            <div class="card shadow-sm">
-
-                <div class="card-body">
+        <div class="row g-4">
 
 
-                    <h5 class="card-title">
-                        👥 Users
-                    </h5>
+            <div class="col-md-4">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            📚 Books
+                        </h5>
 
 
-                    <h2 th:text="${userCount}">
-                        0
-                    </h2>
+                        <h2 th:text="${bookCount}">
+                            0
+                        </h2>
 
 
+                        <a href="/books" class="btn btn-outline-primary btn-sm">
 
-                    <a href="/users"
-                       sec:authorize="hasRole('ADMIN')"
-                       class="btn btn-outline-success btn-sm">
+                            View Books
 
-                        Manage Users
+                        </a>
 
-                    </a>
 
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
+
+
+            <div class="col-md-4">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+
+                        <h5 class="card-title">
+                            👥 Users
+                        </h5>
+
+
+                        <h2 th:text="${userCount}">
+                            0
+                        </h2>
 
 
 
+                        <a href="/users" sec:authorize="hasRole('ADMIN')" class="btn btn-outline-success btn-sm">
+
+                            Manage Users
+
+                        </a>
 
 
-        <!-- Borrows -->
-
-        <div class="col-md-4">
-
-
-            <div class="card shadow-sm">
-
-                <div class="card-body">
-
-
-                    <h5 class="card-title">
-                        📋 Active Borrows
-                    </h5>
-
-
-                    <h2 th:text="${borrowCount}">
-                        0
-                    </h2>
-
-
-
-                    <a href="/borrows"
-                       class="btn btn-outline-warning btn-sm">
-
-                        View Borrows
-
-                    </a>
-
+                    </div>
 
                 </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+
+                        <h5 class="card-title">
+                            📋 Active Borrows
+                        </h5>
+
+
+                        <h2 th:text="${borrowCount}">
+                            0
+                        </h2>
+
+
+
+                        <a href="/borrows" class="btn btn-outline-warning btn-sm">
+
+                            View Borrows
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
 
             </div>
 
@@ -159,67 +140,55 @@
         </div>
 
 
-    </div>
+        <div class="card shadow-sm mt-5">
+
+
+            <div class="card-body">
+
+
+                <h5 class="card-title mb-3">
+                    Quick Actions
+                </h5>
+
+
+
+                <a href="/books/create" class="btn btn-primary me-2">
+
+                    ➕ Add Book
+
+                </a>
+
+
+
+                <a href="/borrows/create" class="btn btn-warning me-2">
+
+                    📋 New Borrow
+
+                </a>
 
 
 
 
+                <a href="/users/create" sec:authorize="hasRole('ADMIN')" class="btn btn-success">
 
+                    👤 Add User
 
-    <!-- Quick Actions -->
-
-    <div class="card shadow-sm mt-5">
-
-
-        <div class="card-body">
-
-
-            <h5 class="card-title mb-3">
-                Quick Actions
-            </h5>
+                </a>
 
 
 
-            <a href="/books/create"
-               class="btn btn-primary me-2">
-
-                ➕ Add Book
-
-            </a>
-
-
-
-            <a href="/borrows/create"
-               class="btn btn-warning me-2">
-
-                📋 New Borrow
-
-            </a>
-
-
-
-
-            <a href="/users/create"
-               sec:authorize="hasRole('ADMIN')"
-               class="btn btn-success">
-
-                👤 Add User
-
-            </a>
-
+            </div>
 
 
         </div>
 
 
+
     </div>
 
 
-
-</div>
-
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/app.js}"></script>
 </body>
 
 </html>

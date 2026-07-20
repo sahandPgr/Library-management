@@ -14,7 +14,7 @@
 
     <h2>Book Form</h2>
 
-    <form th:action="@{/books}" th:object="${book}" method="post">
+    <form th:action="@{/books/save}" th:object="${book}" method="post">
 
         <input type="hidden" th:field="*{id}">
 

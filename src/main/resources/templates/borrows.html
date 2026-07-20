@@ -3,12 +3,11 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<title>Borrows</title>
+    <title>Borrows</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-      rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
@@ -16,103 +15,99 @@
 <body>
 
 
-<div class="container mt-5">
+    <div class="container mt-5">
 
+        <div th:replace="~{fragments/alerts :: alerts}"></div>
+        <h2>Borrow List</h2>
 
-<h2>Borrow List</h2>
+        <a href="/" class="btn btn-secondary mb-3">Home</a>
+        <a href="/borrows/create" class="btn btn-primary mb-3">
 
-<a href="/" class="btn btn-secondary mb-3">Home</a>
-<a href="/borrows/new"
-   class="btn btn-primary mb-3">
+            Add Borrow
 
-Add Borrow
-
-</a>
-
-
-
-<table class="table table-bordered">
-
-
-<thead>
-
-<tr>
-
-<th>ID</th>
-<th>User</th>
-<th>Book</th>
-<th>Borrow Date</th>
-<th>Due Date</th>
-<th>Return Date</th>
-<th>Status</th>
-<th>Action</th>
-
-</tr>
-
-</thead>
+        </a>
 
 
 
-<tbody>
+        <table class="table table-bordered">
 
 
-<tr th:each="borrow:${borrows}">
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Book</th>
+                    <th>Borrow Date</th>
+                    <th>Due Date</th>
+                    <th>Return Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
 
 
-<td th:text="${borrow.id}"></td>
+
+            <tbody>
 
 
-<td th:text="${borrow.user.fullname}"></td>
+                <tr th:each="borrow:${borrows}">
 
 
-<td th:text="${borrow.book.title}"></td>
+                    <td th:text="${borrow.id}"></td>
 
 
-<td th:text="${borrow.borrowDate}"></td>
+                    <td th:text="${borrow.user.fullname}"></td>
 
 
-<td th:text="${borrow.dueDate}"></td>
+                    <td th:text="${borrow.book.title}"></td>
 
 
-<td th:text="${borrow.returnDate}"></td>
+                    <td th:text="${borrow.borrowDate}"></td>
 
 
-<td th:text="${borrow.status}"></td>
+                    <td th:text="${borrow.dueDate}"></td>
 
 
-<td>
-
-    <a th:if="${borrow.status.name() == 'BORROWED'}"
-       class="btn btn-success btn-sm"
-       th:href="@{/borrows/return/{id}(id=${borrow.id})}">
-
-        Return
-
-    </a>
+                    <td th:text="${borrow.returnDate}"></td>
 
 
-    <a class="btn btn-danger btn-sm"
-       th:href="@{/borrows/delete/{id}(id=${borrow.id})}">
-
-        Delete
-
-    </a>
-
-</td>
+                    <td th:text="${borrow.status}"></td>
 
 
-</tr>
+                    <td>
+
+                        <a th:href="@{/borrows/edit/{id}(id=${borrow.id})}" class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <a th:if="${borrow.status.name() == 'BORROWED'}" class="btn btn-success btn-sm"
+                            th:href="@{/borrows/return/{id}(id=${borrow.id})}">
+
+                            Return
+
+                        </a>
 
 
-</tbody>
+                    </td>
 
 
-</table>
+                </tr>
 
 
-</div>
+            </tbody>
 
 
+        </table>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/app.js}"></script>
 </body>
 
 </html>

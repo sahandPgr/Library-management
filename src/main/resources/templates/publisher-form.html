@@ -13,7 +13,7 @@
 
     <h2>Publisher Form</h2>
 
-    <form th:action="@{/publishers}" th:object="${publisher}" method="post">
+    <form th:action="@{/publishers/save}" th:object="${publisher}" method="post">
 
         <input type="hidden" th:field="*{id}">
 
