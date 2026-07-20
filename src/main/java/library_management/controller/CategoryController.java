@@ -6,10 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import library_management.entity.Category;
 import library_management.service.CategoryService;
+
 @Controller
+@RequestMapping("/categories")
 public class CategoryController {
 
     private final CategoryService service;
@@ -18,7 +22,7 @@ public class CategoryController {
         this.service = service;
     }
 
-    @GetMapping("/categories")
+    @GetMapping
     public String categories(Model model) {
 
         model.addAttribute("categories", service.getAllCategories());
@@ -26,7 +30,7 @@ public class CategoryController {
         return "categories";
     }
 
-    @GetMapping("/categories/new")
+    @GetMapping("/create")
     public String showCreateForm(Model model) {
 
         model.addAttribute("category", new Category());
@@ -34,29 +38,74 @@ public class CategoryController {
         return "category-form";
     }
 
-    @PostMapping("/categories")
-public String saveCategory(@ModelAttribute("category") Category category) {
+    @PostMapping("/save")
+    public String saveCategory(
+            @ModelAttribute("category") Category category,
+            RedirectAttributes redirectAttributes) {
 
-    service.saveCategory(category);
+        boolean isNew = category.getId() == null;
 
-    return "redirect:/categories";
-}
+        try {
 
-    @GetMapping("/categories/edit/{id}")
-public String showEditForm(@PathVariable Long id, Model model) {
+            service.saveCategory(category);
 
-    Category category = service.getCategoryById(id);
+            if (isNew) {
 
-    model.addAttribute("category", category);
+                redirectAttributes.addFlashAttribute(
+                        "success",
+                        "Category created successfully.");
 
-    return "category-form";
-}
+            } else {
 
-    @GetMapping("/categories/delete/{id}")
-public String deleteCategory(@PathVariable Long id) {
+                redirectAttributes.addFlashAttribute(
+                        "success",
+                        "Category updated successfully.");
 
-    service.deleteCategory(id);
+            }
 
-    return "redirect:/categories";
-}
+        } catch (Exception e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    "Failed to save category.");
+        }
+
+        return "redirect:/categories";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(
+            @PathVariable Long id,
+            Model model) {
+
+        Category category = service.getCategoryById(id);
+
+        model.addAttribute("category", category);
+
+        return "category-form";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteCategory(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+
+            service.deleteCategory(id);
+
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "Category deleted successfully.");
+
+        } catch (Exception e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    "Cannot delete category because it is used by one or more books.");
+
+        }
+
+        return "redirect:/categories";
+    }
 }

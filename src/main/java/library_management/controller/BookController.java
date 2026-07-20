@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import library_management.dto.BookDto;
 import library_management.entity.Book;
@@ -13,8 +15,8 @@ import library_management.service.AuthorService;
 import library_management.service.BookService;
 import library_management.service.CategoryService;
 import library_management.service.PublisherService;
-
 @Controller
+@RequestMapping("/books")
 public class BookController {
 
     private final BookService bookService;
@@ -52,7 +54,7 @@ public class BookController {
         return dto;
     }
 
-    @GetMapping("/books")
+    @GetMapping
     public String books(Model model) {
 
         model.addAttribute("books", bookService.getAvailableBooks());
@@ -60,7 +62,7 @@ public class BookController {
         return "books";
     }
 
-    @GetMapping("/books/new")
+    @GetMapping("/create")
     public String createBook(Model model) {
 
         model.addAttribute("book", new BookDto());
@@ -77,8 +79,9 @@ public class BookController {
         return "book-form";
     }
 
-    @PostMapping("/books")
-    public String saveBook(@ModelAttribute("book") BookDto dto) {
+    @PostMapping("/save")
+    public String saveBook(@ModelAttribute("book") BookDto dto,
+        RedirectAttributes redirectAttributes) {
 
         Book book;
 
@@ -115,11 +118,14 @@ public class BookController {
         );
 
         bookService.saveBook(book);
-
+        redirectAttributes.addFlashAttribute(
+            "success",
+            "Book saved successfully."
+    );
         return "redirect:/books";
     }
 
-    @GetMapping("/books/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String editBook(@PathVariable Long id, Model model) {
 
         Book book = bookService.getBookById(id);
@@ -140,11 +146,15 @@ public class BookController {
         return "book-form";
     }
 
-    @GetMapping("/books/delete/{id}")
-    public String deleteBook(@PathVariable Long id) {
+    @GetMapping("/delete/{id}")
+    public String deleteBook(@PathVariable Long id,
+        RedirectAttributes redirectAttributes) {
 
         bookService.deleteBook(id);
-
+        redirectAttributes.addFlashAttribute(
+            "success",
+            "Book deleted successfully."
+    );
         return "redirect:/books";
     }
 }

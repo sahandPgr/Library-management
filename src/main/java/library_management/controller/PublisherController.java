@@ -6,12 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import library_management.entity.Publisher;
 import library_management.service.PublisherService;
 
 @Controller
+@RequestMapping("/publishers")
 public class PublisherController {
 
     private final PublisherService publisherService;
@@ -19,47 +21,71 @@ public class PublisherController {
     public PublisherController(PublisherService publisherService) {
         this.publisherService = publisherService;
     }
-    @GetMapping("/publishers")
+
+    @GetMapping
     public String publishers(Model model) {
         model.addAttribute("publishers", publisherService.getAllPublishers());
         return "publishers";
     }
 
-    @GetMapping("/publishers/new")
+    @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("publisher", new Publisher());
         return "publisher-form";
     }
 
-    @PostMapping("/publishers")
-    public String savePublisher(@ModelAttribute("publisher") Publisher publisher) {
+    @PostMapping("/save")
+    public String savePublisher(
+            @ModelAttribute("publisher") Publisher publisher,
+            RedirectAttributes redirectAttributes) {
+
+        boolean isNew = publisher.getId() == null;
+
         publisherService.savePublisher(publisher);
+
+        if (isNew) {
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "Publisher created successfully.");
+        } else {
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "Publisher updated successfully.");
+        }
+
         return "redirect:/publishers";
     }
 
-    @GetMapping("/publishers/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
-        model.addAttribute("publisher",
+        model.addAttribute(
+                "publisher",
                 publisherService.getPublisherById(id));
 
         return "publisher-form";
     }
 
-  @GetMapping("/publishers/delete/{id}")
-public String deletePublisher(
-        @PathVariable Long id,
-        RedirectAttributes redirectAttributes) {
+    @GetMapping("/delete/{id}")
+    public String deletePublisher(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
 
-    try {
-        publisherService.deletePublisher(id);
-    } catch (Exception e) {
-        redirectAttributes.addFlashAttribute(
-                "error",
-                "Cannot delete publisher because it is used by one or more books."
-        );
+        try {
+
+            publisherService.deletePublisher(id);
+
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "Publisher deleted successfully.");
+
+        } catch (Exception e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    "Cannot delete publisher because it is used by one or more books.");
+        }
+
+        return "redirect:/publishers";
     }
-
-    return "redirect:/publishers";
-}
 }

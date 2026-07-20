@@ -46,6 +46,7 @@ public class UserController {
     @PostMapping("/create")
     public String createUser(
             @Valid @ModelAttribute("userDto") UserDto dto,
+            RedirectAttributes redirectAttributes,
             BindingResult result,
             Model model) {
 
@@ -78,7 +79,20 @@ public class UserController {
 
         user.setRole(dto.getRole());
 
-        userService.save(user);
+        try {
+
+            userService.save(user);
+
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "User create successfully.");
+
+        } catch (Exception e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    "Failed to create user.");
+        }
 
         return "redirect:/users";
     }
@@ -114,6 +128,7 @@ public class UserController {
     @PostMapping("/update")
     public String updateUser(
             @Valid @ModelAttribute("userDto") UserDto dto,
+            RedirectAttributes redirectAttributes,
             BindingResult result,
             Model model) {
 
@@ -122,7 +137,6 @@ public class UserController {
             model.addAttribute(
                     "roles",
                     UserRole.values());
-
             return "user-form";
         }
 
@@ -142,37 +156,44 @@ public class UserController {
 
         }
 
-        userService.save(user);
+        try {
 
+            userService.save(user);
+
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "User updated successfully.");
+
+        } catch (Exception e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    "Failed to update user.");
+        }
         return "redirect:/users";
     }
 
     @GetMapping("/delete/{id}")
-public String deleteUser(
-        @PathVariable Long id,
-        RedirectAttributes redirectAttributes) {
+    public String deleteUser(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
 
+        try {
 
-    try {
+            userService.delete(id);
 
-        userService.delete(id);
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "User deleted successfully.");
 
-        redirectAttributes.addFlashAttribute(
-                "success",
-                "User deleted successfully"
-        );
+        } catch (Exception e) {
 
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    "Cannot delete user because borrow records exist");
+        }
 
-    } catch (Exception e) {
-
-        redirectAttributes.addFlashAttribute(
-                "error",
-                "Cannot delete user because borrow records exist"
-        );
+        return "redirect:/users";
     }
-
-
-    return "redirect:/users";
-}
 
 }

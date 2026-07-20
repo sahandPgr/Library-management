@@ -45,7 +45,7 @@ public class Borrow {
 
 
     @Enumerated(EnumType.STRING)
-    private BorrowStatus status;
+    private BorrowStatus status = BorrowStatus.BORROWED;
 
 
     public Borrow() {
