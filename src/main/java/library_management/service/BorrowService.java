@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import library_management.entity.Borrow;
+import library_management.entity.BorrowStatus;
 import library_management.repository.BorrowRepository;
 
 @Service
@@ -45,5 +46,12 @@ public class BorrowService {
         repository.deleteById(id);
 
     }
+
+    public long countActiveBorrows(){
+
+    return repository
+            .countByStatus(BorrowStatus.BORROWED);
+
+}
 
 }

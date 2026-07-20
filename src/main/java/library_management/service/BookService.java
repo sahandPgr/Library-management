@@ -31,4 +31,9 @@ public class BookService {
     public void deleteBook(Long id) {
         repository.deleteById(id);
     }
+    public long countBooks(){
+
+    return repository.count();
+
+}
 }

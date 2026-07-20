@@ -55,5 +55,10 @@ public class UserService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+    public long countUsers(){
+
+    return repository.count();
+
+}
 
 }
