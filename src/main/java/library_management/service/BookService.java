@@ -21,6 +21,13 @@ public class BookService {
 }
 
     public void saveBook(Book book) {
+        if (book.getId() == null) {
+
+        book.setAvailableQuantity(
+                book.getQuantity()
+        );
+
+    }
         repository.save(book);
     }
 

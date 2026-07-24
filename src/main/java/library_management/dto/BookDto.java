@@ -12,8 +12,6 @@ public class BookDto {
 
     private Integer quantity;
 
-    private Integer availableQuantity;
-
     private Long authorId;
 
     private Long publisherId;
@@ -61,14 +59,6 @@ public class BookDto {
 
     public void setQuantity(Integer quantity){
         this.quantity=quantity;
-    }
-
-    public Integer getAvailableQuantity() {
-        return availableQuantity;
-    }
-
-    public void setAvailableQuantity(Integer availableQuantity){
-        this.availableQuantity=availableQuantity;
     }
 
     public Long getAuthorId() {

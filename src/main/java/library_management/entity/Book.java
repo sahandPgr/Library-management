@@ -28,7 +28,7 @@ public class Book {
 
     private Integer quantity;
 
-    @Column(name = "available_quantity")
+    @Column(name = "available_quantity", nullable = false)
     private Integer availableQuantity;
 
     @ManyToOne
