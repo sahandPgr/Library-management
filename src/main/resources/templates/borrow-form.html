@@ -36,7 +36,7 @@
 <label>User</label>
 
 <select class="form-select"
-        th:field="*{userId}">
+        th:field="*{userId}" th:disabled="${editMode}">
 
 
 <option value="">
@@ -51,6 +51,9 @@ Select User
 
 
 </select>
+<input type="hidden"
+       th:if="${editMode}"
+       th:field="*{userId}">
 
 </div>
 
@@ -61,7 +64,7 @@ Select User
 <label>Book</label>
 
 <select class="form-select"
-        th:field="*{bookId}">
+        th:field="*{bookId}"  th:disabled="${editMode}">
 
 
 <option value="">
@@ -76,6 +79,9 @@ Select Book
 
 
 </select>
+<input type="hidden"
+       th:if="${editMode}"
+       th:field="*{bookId}">
 
 </div>
 
@@ -103,7 +109,16 @@ Select Book
 
 </div>
 
+<div class="mb-3">
 
+<label>Return Date</label>
+
+<input type="date"
+class="form-control"
+       th:field="*{returnDate}"
+       th:disabled="${!returned}">
+
+</div>
 
 <button type="submit" class="btn btn-success">
 

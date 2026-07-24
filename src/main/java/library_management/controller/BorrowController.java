@@ -87,7 +87,14 @@ public class BorrowController {
         model.addAttribute(
                 "books",
                 bookService.getAvailableBooks());
-
+           model.addAttribute(
+            "editMode",
+            false
+    );
+        model.addAttribute(
+        "returned",
+        false
+);
         return "borrow-form";
 
     }
@@ -130,6 +137,14 @@ public class BorrowController {
 
                     return "borrow-form";
                 }
+                model.addAttribute(
+        "editMode",
+        false
+);
+model.addAttribute(
+        "returned",
+        false
+);
 
                 book.setAvailableQuantity(
                         book.getAvailableQuantity() - 1);
@@ -206,6 +221,14 @@ public class BorrowController {
         model.addAttribute(
                 "users",
                 userService.getAllUsers());
+        model.addAttribute(
+            "editMode",
+            true
+    );
+    model.addAttribute(
+            "returned",
+            borrow.getStatus() == BorrowStatus.RETURNED
+    );
 
         model.addAttribute(
                 "books",
