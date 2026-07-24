@@ -3,11 +3,11 @@
 
 <head>
 
-<meta charset="UTF-8">
+       <meta charset="UTF-8">
 
-<title>Borrow Form</title>
+       <title>Borrow Form</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
@@ -15,126 +15,104 @@
 <body>
 
 
-<div class="container mt-5">
+       <div class="container mt-5">
 
 
-<h2>Borrow Book</h2>
+              <h2>Borrow Book</h2>
 
-<div th:if="${error}" class="alert alert-danger">
-    <span th:text="${error}"></span>
-</div>
+              <div th:if="${error}" class="alert alert-danger">
+                     <span th:text="${error}"></span>
+              </div>
 
-<form th:action="@{/borrows/save}" 
-      th:object="${borrow}" 
-      method="post">
+              <form th:action="@{/borrows/save}" th:object="${borrow}" method="post">
 
-<input type="hidden"
-       th:field="*{id}">
+                     <input type="hidden" th:field="*{id}">
 
-<div class="mb-3">
+                     <div class="mb-3">
 
-<label>User</label>
+                            <label>User</label>
 
-<select class="form-select"
-        th:field="*{userId}" th:disabled="${editMode}">
+                            <select class="form-select" th:field="*{userId}" th:disabled="${editMode}">
 
 
-<option value="">
-Select User
-</option>
+                                   <option value="">
+                                          Select User
+                                   </option>
 
 
-<option th:each="user:${users}"
-        th:value="${user.id}"
-        th:text="${user.fullname}">
-</option>
+                                   <option th:each="user:${users}" th:value="${user.id}" th:text="${user.fullname}">
+                                   </option>
 
 
-</select>
-<input type="hidden"
-       th:if="${editMode}"
-       th:field="*{userId}">
+                            </select>
+                            <input type="hidden" th:if="${editMode}" th:field="*{userId}">
 
-</div>
+                     </div>
 
 
 
-<div class="mb-3">
+                     <div class="mb-3">
 
-<label>Book</label>
+                            <label>Book</label>
 
-<select class="form-select"
-        th:field="*{bookId}"  th:disabled="${editMode}">
-
-
-<option value="">
-Select Book
-</option>
+                            <select class="form-select" th:field="*{bookId}" th:disabled="${editMode}">
 
 
-<option th:each="book:${books}"
-        th:value="${book.id}"
-        th:text="${book.title}">
-</option>
+                                   <option value="">
+                                          Select Book
+                                   </option>
 
 
-</select>
-<input type="hidden"
-       th:if="${editMode}"
-       th:field="*{bookId}">
+                                   <option th:each="book:${books}" th:value="${book.id}" th:text="${book.title}">
+                                   </option>
 
-</div>
+
+                            </select>
+                            <input type="hidden" th:if="${editMode}" th:field="*{bookId}">
+
+                     </div>
 
 
 
-<div class="mb-3">
+                     <div class="mb-3">
 
-<label>Borrow Date</label>
+                            <label>Borrow Date</label>
 
-<input type="date"
-       class="form-control"
-       th:field="*{borrowDate}">
+                            <input type="date" class="form-control" th:field="*{borrowDate}">
 
-</div>
+                     </div>
 
 
 
-<div class="mb-3">
+                     <div class="mb-3">
 
-<label>Due Date</label>
+                            <label>Due Date</label>
 
-<input type="date"
-       class="form-control"
-       th:field="*{dueDate}">
+                            <input type="date" class="form-control" th:field="*{dueDate}">
 
-</div>
+                     </div>
 
-<div class="mb-3">
+                     <div class="mb-3">
 
-<label>Return Date</label>
+                            <label>Return Date</label>
 
-<input type="date"
-class="form-control"
-       th:field="*{returnDate}"
-       th:disabled="${!returned}">
+                            <input type="date" class="form-control" th:field="*{returnDate}" th:disabled="${!returned}">
 
-</div>
+                     </div>
 
-<button type="submit" class="btn btn-success">
+                     <button type="submit" class="btn btn-success">
 
-Save
+                            Save
 
-</button>
-<a href="/borrows" class="btn btn-secondary">
-            Back
-        </a>
+                     </button>
+                     <a th:href="@{${returnTo}}" class="btn btn-secondary">
+                            Back
+                     </a>
 
-</form>
+              </form>
 
 
-</div>
-
-
+       </div>
 </body>
 
 </html>

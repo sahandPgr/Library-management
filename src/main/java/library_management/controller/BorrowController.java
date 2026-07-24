@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import library_management.dto.BorrowDto;
@@ -74,12 +75,12 @@ public class BorrowController {
     }
 
     @GetMapping("/create")
-    public String createBorrow(Model model) {
+    public String createBorrow(@RequestParam(required = false, defaultValue = "/borrows") String returnTo,Model model) {
 
         model.addAttribute(
                 "borrow",
                 new BorrowDto());
-
+        model.addAttribute("returnTo", returnTo);
         model.addAttribute(
                 "users",
                 userService.getAllUsers());

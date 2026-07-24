@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import library_management.dto.BookDto;
@@ -15,6 +16,7 @@ import library_management.service.AuthorService;
 import library_management.service.BookService;
 import library_management.service.CategoryService;
 import library_management.service.PublisherService;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
@@ -45,8 +47,6 @@ public class BookController {
         dto.setIsbn(book.getIsbn());
         dto.setPublishYear(book.getPublishYear());
         dto.setQuantity(book.getQuantity());
-        dto.setAvailableQuantity(book.getAvailableQuantity());
-
         dto.setAuthorId(book.getAuthor().getId());
         dto.setPublisherId(book.getPublisher().getId());
         dto.setCategoryId(book.getCategory().getId());
@@ -63,10 +63,10 @@ public class BookController {
     }
 
     @GetMapping("/create")
-    public String createBook(Model model) {
+    public String createBook(@RequestParam(required = false, defaultValue = "/books") String returnTo,Model model) {
 
         model.addAttribute("book", new BookDto());
-
+        model.addAttribute("returnTo", returnTo);
         model.addAttribute("authors",
                 authorService.getAllAuthors());
 
@@ -75,19 +75,31 @@ public class BookController {
 
         model.addAttribute("categories",
                 categoryService.getAllCategories());
-
         return "book-form";
     }
 
     @PostMapping("/save")
     public String saveBook(@ModelAttribute("book") BookDto dto,
-        RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
 
         Book book;
 
         if (dto.getId() != null) {
 
             book = bookService.getBookById(dto.getId());
+            int quantityDifference = dto.getQuantity() - book.getQuantity();
+            if (book.getAvailableQuantity() + quantityDifference < 0) {
+
+                redirectAttributes.addFlashAttribute(
+                        "error",
+                        "Cannot reduce quantity because some books are borrowed.");
+
+                return "redirect:/books/edit/" + dto.getId();
+            }
+            book.setQuantity(dto.getQuantity());
+
+            book.setAvailableQuantity(
+                    book.getAvailableQuantity() + quantityDifference);
 
         } else {
 
@@ -103,25 +115,19 @@ public class BookController {
 
         book.setQuantity(dto.getQuantity());
 
-        book.setAvailableQuantity(dto.getAvailableQuantity());
-
         book.setAuthor(
-                authorService.getAuthorById(dto.getAuthorId())
-        );
+                authorService.getAuthorById(dto.getAuthorId()));
 
         book.setPublisher(
-                publisherService.getPublisherById(dto.getPublisherId())
-        );
+                publisherService.getPublisherById(dto.getPublisherId()));
 
         book.setCategory(
-                categoryService.getCategoryById(dto.getCategoryId())
-        );
+                categoryService.getCategoryById(dto.getCategoryId()));
 
         bookService.saveBook(book);
         redirectAttributes.addFlashAttribute(
-            "success",
-            "Book saved successfully."
-    );
+                "success",
+                "Book saved successfully.");
         return "redirect:/books";
     }
 
@@ -148,13 +154,12 @@ public class BookController {
 
     @GetMapping("/delete/{id}")
     public String deleteBook(@PathVariable Long id,
-        RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
 
         bookService.deleteBook(id);
         redirectAttributes.addFlashAttribute(
-            "success",
-            "Book deleted successfully."
-    );
+                "success",
+                "Book deleted successfully.");
         return "redirect:/books";
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
@@ -37,10 +38,11 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String createForm(Model model) {
+    public String createForm(@RequestParam(required = false, defaultValue = "/users") String returnTo, Model model) {
 
         model.addAttribute("userDto", new UserDto());
         model.addAttribute("roles", UserRole.values());
+        model.addAttribute("returnTo", returnTo);
 
         return "user-form";
     }

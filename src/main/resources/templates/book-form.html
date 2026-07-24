@@ -10,137 +10,94 @@
 
 <body>
 
-<div class="container mt-5">
+    <div class="container mt-3">
+             <div th:if="${error}" class="alert alert-danger">
+                     <span th:text="${error}"></span>
+              </div>
+        <h2>Book Form</h2>
 
-    <h2>Book Form</h2>
+        <form th:action="@{/books/save}" th:object="${book}" method="post">
 
-    <form th:action="@{/books/save}" th:object="${book}" method="post">
+            <input type="hidden" th:field="*{id}">
 
-        <input type="hidden" th:field="*{id}">
+            <div class="mb-3">
+                <label class="form-label">Title</label>
 
-        <div class="mb-3">
-            <label class="form-label">Title</label>
+                <input type="text" class="form-control" th:field="*{title}" required>
+            </div>
 
-            <input
-                    type="text"
-                    class="form-control"
-                    th:field="*{title}"
-                    required>
-        </div>
+            <div class="mb-3">
+                <label class="form-label">ISBN</label>
 
-        <div class="mb-3">
-            <label class="form-label">ISBN</label>
+                <input type="text" class="form-control" th:field="*{isbn}">
+            </div>
 
-            <input
-                    type="text"
-                    class="form-control"
-                    th:field="*{isbn}">
-        </div>
+            <div class="mb-3">
+                <label class="form-label">Publish Year</label>
 
-        <div class="mb-3">
-            <label class="form-label">Publish Year</label>
+                <input type="number" class="form-control" th:field="*{publishYear}">
+            </div>
 
-            <input
-                    type="number"
-                    class="form-control"
-                    th:field="*{publishYear}">
-        </div>
+            <div class="mb-3">
+                <label class="form-label">Quantity</label>
 
-        <div class="mb-3">
-            <label class="form-label">Quantity</label>
+                <input type="number" class="form-control" min="1" th:field="*{quantity}">
+            </div>
+            <div class="mb-3">
 
-            <input
-                    type="number"
-                    class="form-control"
-                    min="1"
-                    th:field="*{quantity}">
-        </div>
+                <label class="form-label">Author</label>
 
-        <div class="mb-3">
-            <label class="form-label">Available Quantity</label>
+                <select class="form-select" th:field="*{authorId}" required>
 
-            <input
-                    type="number"
-                    class="form-control"
-                    min="0"
-                    th:field="*{availableQuantity}">
-        </div>
+                    <option value="">Select Author</option>
 
-        <div class="mb-3">
+                    <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.fullName}">
+                    </option>
 
-            <label class="form-label">Author</label>
+                </select>
 
-            <select
-                    class="form-select"
-                    th:field="*{authorId}"
-                    required>
+            </div>
 
-                <option value="">Select Author</option>
+            <div class="mb-3">
 
-                <option
-                        th:each="author : ${authors}"
-                        th:value="${author.id}"
-                        th:text="${author.fullName}">
-                </option>
+                <label class="form-label">Publisher</label>
 
-            </select>
+                <select class="form-select" th:field="*{publisherId}" required>
 
-        </div>
+                    <option value="">Select Publisher</option>
 
-        <div class="mb-3">
+                    <option th:each="publisher : ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}">
+                    </option>
 
-            <label class="form-label">Publisher</label>
+                </select>
 
-            <select
-                    class="form-select"
-                    th:field="*{publisherId}"
-                    required>
+            </div>
 
-                <option value="">Select Publisher</option>
+            <div class="mb-3">
 
-                <option
-                        th:each="publisher : ${publishers}"
-                        th:value="${publisher.id}"
-                        th:text="${publisher.name}">
-                </option>
+                <label class="form-label">Category</label>
 
-            </select>
+                <select class="form-select" th:field="*{categoryId}" required>
 
-        </div>
+                    <option value="">Select Category</option>
 
-        <div class="mb-3">
+                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
+                    </option>
 
-            <label class="form-label">Category</label>
+                </select>
 
-            <select
-                    class="form-select"
-                    th:field="*{categoryId}"
-                    required>
+            </div>
+            <button type="submit" class="btn btn-success">
+                Save
+            </button>
 
-                <option value="">Select Category</option>
+            <a th:href="@{${returnTo}}" class="btn btn-secondary">
+                Back
+            </a>
 
-                <option
-                        th:each="category : ${categories}"
-                        th:value="${category.id}"
-                        th:text="${category.name}">
-                </option>
+        </form>
 
-            </select>
-
-        </div>
-
-        <button type="submit" class="btn btn-success">
-            Save
-        </button>
-
-        <a href="/books" class="btn btn-secondary">
-            Back
-        </a>
-
-    </form>
-
-</div>
-
+    </div>
 </body>
 
 </html>

@@ -152,7 +152,7 @@
 
 
 
-                <a href="/books/create" class="btn btn-primary me-2">
+                <a th:href="@{/books/create(returnTo='/')}" class="btn btn-primary me-2 quick-action">
 
                     ➕ Add Book
 
@@ -160,7 +160,7 @@
 
 
 
-                <a href="/borrows/create" class="btn btn-warning me-2">
+                <a th:href="@{/borrows/create(returnTo='/')}" class="btn btn-warning me-2 quick-action">
 
                     📋 New Borrow
 
@@ -169,7 +169,7 @@
 
 
 
-                <a href="/users/create" sec:authorize="hasRole('ADMIN')" class="btn btn-success">
+                <a th:href="@{/users/create(returnTo='/')}" sec:authorize="hasRole('ADMIN')" class="btn btn-success quick-action">
 
                     👤 Add User
 
