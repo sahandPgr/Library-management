@@ -14,7 +14,7 @@
 
         <h2>Author Form</h2>
 
-        <form th:action="@{/authors}" th:object="${author}" method="post">
+        <form th:action="@{/authors/save}" th:object="${author}" method="post">
 
             <input type="hidden" th:field="*{id}">
 
@@ -33,7 +33,7 @@
                 <input type="date" class="form-control" th:field="*{birthDate}">
             </div>
 
-            <button class="btn btn-success">Save</button>
+            <button class="btn btn-success" type="submit">Save</button>
 
             <a href="/authors" class="btn btn-secondary">Back</a>
 
