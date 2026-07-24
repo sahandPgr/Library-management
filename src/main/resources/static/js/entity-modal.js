@@ -1,24 +1,24 @@
-   const entityConfig = {
+const entityConfig = {
 
-            category: {
-                url: "/api/categories",
-                select: "#categorySelect",
-                label: "name"
-            },
+    category: {
+        url: "/api/categories",
+        select: "#categorySelect",
+        label: "name"
+    },
 
-            publisher: {
-                url: "/api/publishers",
-                select: "#publisherSelect",
-                label: "name"
-            },
+    publisher: {
+        url: "/api/publishers",
+        select: "#publisherSelect",
+        label: "name"
+    },
 
-            author: {
-                url: "/api/authors",
-                select: "#authorSelect",
-                label: "fullName"
-            }
+    author: {
+        url: "/api/authors",
+        select: "#authorSelect",
+        label: "fullName"
+    }
 
-        };
+};
 document.addEventListener(
     "DOMContentLoaded",
     function () {

@@ -21,7 +21,7 @@
         </div>
         <h2>Book Form</h2>
 
-        <form th:action="@{/books}" th:object="${book}" method="post" class="book-form">
+        <form th:action="@{/books/save}" th:object="${book}" method="post" class="book-form">
 
             <input type="hidden" th:field="*{id}">
 
@@ -52,7 +52,7 @@
 
                 <label class="form-label">Author</label>
 
-                <div class="input-group">
+                <div class="d-flex gap-2">
 
 
                     <select id="authorSelect" class="form-select" th:field="*{authorId}">
@@ -86,7 +86,7 @@
 
                 <label class="form-label">Publisher</label>
 
-                <div class="input-group">
+                <div class="d-flex gap-2">
 
 
                     <select id="publisherSelect" class="form-select" th:field="*{publisherId}">
@@ -121,7 +121,7 @@
 
                 <label class="form-label">Category</label>
 
-                <div class="input-group">
+                <div class="d-flex gap-2">
 
 
                     <select id="categorySelect" class="form-select" th:field="*{categoryId}">
