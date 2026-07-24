@@ -1,5 +1,7 @@
 package library_management.controller;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -176,8 +178,17 @@ public class UserController {
     @GetMapping("/delete/{id}")
     public String deleteUser(
             @PathVariable Long id,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            Principal principal) {
+        User user = userService.getUserById(id);
+        if (user.getEmail().equals(principal.getName())) {
 
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    "You cannot delete your own account.");
+
+            return "redirect:/users";
+        }
         try {
 
             userService.delete(id);
