@@ -20,8 +20,8 @@ public class CategoryService {
         return repository.findAll();
     }
     
-    public void saveCategory(Category category) {
-    repository.save(category);
+    public Category saveCategory(Category category) {
+        return repository.save(category);
 }
 
     public Category getCategoryById(Long id) {

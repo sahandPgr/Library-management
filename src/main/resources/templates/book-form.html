@@ -4,19 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Book Form</title>
+    <meta name="_csrf" th:content="${_csrf.token}" />
 
+
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
 
     <div class="container mt-3">
-             <div th:if="${error}" class="alert alert-danger">
-                     <span th:text="${error}"></span>
-              </div>
+        <div th:if="${error}" class="alert alert-danger">
+            <span th:text="${error}"></span>
+        </div>
         <h2>Book Form</h2>
 
-        <form th:action="@{/books/save}" th:object="${book}" method="post">
+        <form th:action="@{/books}" th:object="${book}" method="post" class="book-form">
 
             <input type="hidden" th:field="*{id}">
 
@@ -47,14 +52,33 @@
 
                 <label class="form-label">Author</label>
 
-                <select class="form-select" th:field="*{authorId}" required>
+                <div class="input-group">
 
-                    <option value="">Select Author</option>
 
-                    <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.fullName}">
-                    </option>
+                    <select id="authorSelect" class="form-select" th:field="*{authorId}">
 
-                </select>
+
+                        <option value="">
+                            Select Author
+                        </option>
+
+
+                        <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.fullName}">
+                        </option>
+
+
+                    </select>
+
+
+
+                    <button type="button" class="btn btn-outline-primary add-entity-btn" data-type="author">
+
+                        +
+
+                    </button>
+
+
+                </div>
 
             </div>
 
@@ -62,14 +86,34 @@
 
                 <label class="form-label">Publisher</label>
 
-                <select class="form-select" th:field="*{publisherId}" required>
+                <div class="input-group">
 
-                    <option value="">Select Publisher</option>
 
-                    <option th:each="publisher : ${publishers}" th:value="${publisher.id}" th:text="${publisher.name}">
-                    </option>
+                    <select id="publisherSelect" class="form-select" th:field="*{publisherId}">
 
-                </select>
+
+                        <option value="">
+                            Select Publisher
+                        </option>
+
+
+                        <option th:each="publisher : ${publishers}" th:value="${publisher.id}"
+                            th:text="${publisher.name}">
+                        </option>
+
+
+                    </select>
+
+
+
+                    <button type="button" class="btn btn-outline-primary add-entity-btn" data-type="publisher">
+
+                        +
+
+                    </button>
+
+
+                </div>
 
             </div>
 
@@ -77,14 +121,33 @@
 
                 <label class="form-label">Category</label>
 
-                <select class="form-select" th:field="*{categoryId}" required>
+                <div class="input-group">
 
-                    <option value="">Select Category</option>
 
-                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
-                    </option>
+                    <select id="categorySelect" class="form-select" th:field="*{categoryId}">
 
-                </select>
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+
+                        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
+                        </option>
+
+
+                    </select>
+
+
+
+                    <button type="button" class="btn btn-outline-primary add-entity-btn" data-type="category">
+
+                        +
+
+                    </button>
+
+
+                </div>
 
             </div>
             <button type="submit" class="btn btn-success">
@@ -94,10 +157,16 @@
             <a th:href="@{${returnTo}}" class="btn btn-secondary">
                 Back
             </a>
-
         </form>
 
     </div>
+    <div th:replace="~{fragments/entity-modal :: entityModal}">
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/entity-modal.js}"></script>
+    <script th:src="@{/js/select-search.js}"></script>
 </body>
 
 </html>

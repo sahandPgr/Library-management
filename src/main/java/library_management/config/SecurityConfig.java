@@ -14,76 +14,80 @@ import library_management.service.CustomUserDetailsService;
 @Configuration
 public class SecurityConfig {
 
-    private final CustomUserDetailsService userDetailsService;
+        private final CustomUserDetailsService userDetailsService;
         private final CustomAuthenticationFailureHandler failureHandler;
-    public SecurityConfig(CustomUserDetailsService userDetailsService, CustomAuthenticationFailureHandler failureHandler) {
-        this.userDetailsService = userDetailsService;
-        this.failureHandler = failureHandler;
-    }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        public SecurityConfig(CustomUserDetailsService userDetailsService,
+                        CustomAuthenticationFailureHandler failureHandler) {
+                this.userDetailsService = userDetailsService;
+                this.failureHandler = failureHandler;
+        }
 
-    @Bean
-    DaoAuthenticationProvider authenticationProvider() {
+        @Bean
+        PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-      DaoAuthenticationProvider provider =
-            new DaoAuthenticationProvider(userDetailsService);
+        @Bean
+        DaoAuthenticationProvider authenticationProvider() {
 
-        provider.setPasswordEncoder(passwordEncoder());
+                DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
 
-        return provider;
-    }
+                provider.setPasswordEncoder(passwordEncoder());
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+                return provider;
+        }
 
-        http
-                .authorizeHttpRequests(auth -> auth
+        @Bean
+        SecurityFilterChain securityFilterChain(HttpSecurity http)
+                        throws Exception {
 
-                        .requestMatchers(
-                                "/login",
-                                "/css/**",
-                                "/js/**",
-                                "/images/**"
-                        ).permitAll()
+                http
+                                .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/users/**")
-                        .hasRole("ADMIN")
+                                                .requestMatchers(
+                                                                "/login",
+                                                                "/css/**",
+                                                                "/js/**",
+                                                                "/images/**")
+                                                .permitAll()
 
-                        .requestMatchers(
-                                "/books/**",
-                                "/authors/**",
-                                "/categories/**",
-                                "/publishers/**",
-                                "/borrows/**"
-                        ).hasAnyRole("ADMIN", "LIBRARIAN")
+                                                .requestMatchers("/users/**")
+                                                .hasRole("ADMIN")
 
-                        .anyRequest()
-                        .authenticated()
-                )
+                                                .requestMatchers(
+                                                                "/books/**",
+                                                                "/authors/**",
+                                                                "/categories/**",
+                                                                "/publishers/**",
+                                                                "/borrows/**")
+                                                .hasAnyRole("ADMIN", "LIBRARIAN")
+                                                .requestMatchers(
+                                                                "/api/categories/**",
+                                                                "/api/publishers/**",
+                                                                "/api/authors/**")
+                                                .hasAnyRole(
+                                                                "ADMIN",
+                                                                "LIBRARIAN")
+                                                .anyRequest()
+                                                .authenticated())
 
-                .formLogin(form -> form
+                                .formLogin(form -> form
 
-                        .loginPage("/login")
-                        .failureHandler(failureHandler)
-                        .defaultSuccessUrl("/", true)
+                                                .loginPage("/login")
+                                                .failureHandler(failureHandler)
+                                                .defaultSuccessUrl("/", true)
 
-                        .permitAll()
-                )
+                                                .permitAll())
 
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")    
-                        .permitAll()
-                );
+                                .logout(logout -> logout
+                                                .logoutUrl("/logout")
+                                                .logoutSuccessUrl("/login?logout")
+                                                .invalidateHttpSession(true)
+                                                .deleteCookies("JSESSIONID")
+                                                .permitAll());
 
-        return http.build();
-    }
+                return http.build();
+        }
 
 }

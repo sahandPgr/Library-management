@@ -1,0 +1,33 @@
+.select2-container {
+    flex: 1 1 auto;
+    width: 1% !important;
+}
+
+
+.select2-container .select2-selection--single {
+
+    height: 38px;
+
+    border: 1px solid #dee2e6;
+
+    border-radius: 0.375rem;
+
+}
+
+
+.select2-selection__rendered {
+
+    line-height: 38px !important;
+
+}
+
+
+.select2-selection__arrow {
+
+    height: 38px !important;
+
+}
+
+.book-form {
+    padding-bottom: 150px;
+}

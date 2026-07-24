@@ -20,8 +20,8 @@ public class PublisherService {
         return repository.findAll();
     }
 
-    public void savePublisher(Publisher publisher) {
-        repository.save(publisher);
+    public Publisher savePublisher(Publisher publisher) {
+        return repository.save(publisher);
     }
 
     public Publisher getPublisherById(Long id) {

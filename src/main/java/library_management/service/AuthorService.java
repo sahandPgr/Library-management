@@ -20,8 +20,8 @@ public class AuthorService {
         return repository.findAll();
     }
 
-    public void saveAuthor(Author author) {
-        repository.save(author);
+    public Author saveAuthor(Author author) {
+        return repository.save(author);
     }
 
     public Author getAuthorById(Long id) {
