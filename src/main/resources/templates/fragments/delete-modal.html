@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="deleteModal">
+
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Confirm Delete
+                    </h5>
+
+                    <button class="btn-close" data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body text-center">
+
+                    <h5 class="text-danger">
+
+                        Delete Item?
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        This action cannot be undone.
+
+                    </p>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+
+                        Cancel
+
+                    </button>
+
+                    <a id="confirmDeleteBtn" class="btn btn-danger">
+
+                        Delete
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</th:block>
+<th:block th:fragment="script">
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+
+            document.querySelectorAll(".delete-btn").forEach(button => {
+
+                button.addEventListener("click", function () {
+
+                    confirmDeleteBtn.setAttribute(
+                        "href",
+                        this.getAttribute("data-url")
+                    );
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+</th:block>
+
+</html>
