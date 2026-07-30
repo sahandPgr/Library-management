@@ -32,7 +32,8 @@ public class CategoryController {
     }
 
     @GetMapping("/create")
-    public String showCreateForm(@RequestParam(required = false, defaultValue = "/categories") String returnTo,Model model) {
+    public String showCreateForm(@RequestParam(required = false, defaultValue = "/categories") String returnTo,
+            Model model) {
 
         model.addAttribute("category", new Category());
         model.addAttribute("returnTo", returnTo);
@@ -77,11 +78,13 @@ public class CategoryController {
     @GetMapping("/edit/{id}")
     public String showEditForm(
             @PathVariable Long id,
+            @RequestParam(required = false) String returnTo,
             Model model) {
 
         Category category = service.getCategoryById(id);
 
         model.addAttribute("category", category);
+        model.addAttribute("returnTo", returnTo);
 
         return "category-form";
     }

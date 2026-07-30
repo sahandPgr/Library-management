@@ -15,7 +15,7 @@
         <h2>Authors</h2>
 
         <a href="/" class="btn btn-secondary mb-3">Home</a>
-        
+
         <a th:href="@{/authors/create(returnTo='/authors')}" class="btn btn-primary mb-3">
             Add Author
         </a>
@@ -48,14 +48,13 @@
 
                     <td>
 
-                        <a th:href="@{/authors/edit/{id}(id=${author.id})}" class="btn btn-warning btn-sm">
+                        <a th:href="@{/authors/edit/{id}(id=${author.id},returnTo='/authors')}" class="btn btn-warning btn-sm">
                             Edit
                         </a>
 
                         <a href="#" th:data-url="@{/authors/delete/{id}(id=${author.id})}"
                             class="btn btn-danger btn-sm delete-btn" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal"
-                            data-item="Author">
+                            data-bs-target="#deleteModal" data-item="Author">
                             Delete
                         </a>
 

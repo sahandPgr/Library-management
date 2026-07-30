@@ -22,7 +22,7 @@
         <h2>Book Form</h2>
 
         <form th:action="@{/books/save}" th:object="${book}" method="post" class="book-form">
-
+            <input type="hidden" name="returnTo" th:value="${returnTo}">
             <input type="hidden" th:field="*{id}">
 
             <div class="mb-3">

@@ -82,12 +82,14 @@ public class AuthorController {
     @GetMapping("/edit/{id}")
     public String showEditForm(
             @PathVariable Long id,
+            @RequestParam(required = false) String returnTo,
             Model model) {
 
         model.addAttribute(
                 "author",
                 authorService.getAuthorById(id));
-
+        model.addAttribute("returnTo", returnTo);
+        
         return "author-form";
     }
 

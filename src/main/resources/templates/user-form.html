@@ -21,6 +21,7 @@
       ? @{/users/create}
       : @{/users/update}" th:object="${userDto}" method="post">
             <input type="hidden" th:field="*{id}">
+            <input type="hidden" name="returnTo" th:value="${returnTo}">
             <div class="mb-3">
 
                 <label class="form-label">Full Name</label>

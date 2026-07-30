@@ -21,145 +21,150 @@ import library_management.service.PublisherService;
 @RequestMapping("/books")
 public class BookController {
 
-    private final BookService bookService;
-    private final AuthorService authorService;
-    private final PublisherService publisherService;
-    private final CategoryService categoryService;
+        private final BookService bookService;
+        private final AuthorService authorService;
+        private final PublisherService publisherService;
+        private final CategoryService categoryService;
 
-    public BookController(
-            BookService bookService,
-            AuthorService authorService,
-            PublisherService publisherService,
-            CategoryService categoryService) {
+        public BookController(
+                        BookService bookService,
+                        AuthorService authorService,
+                        PublisherService publisherService,
+                        CategoryService categoryService) {
 
-        this.bookService = bookService;
-        this.authorService = authorService;
-        this.publisherService = publisherService;
-        this.categoryService = categoryService;
-    }
-
-    private BookDto convertToDto(Book book) {
-
-        BookDto dto = new BookDto();
-
-        dto.setId(book.getId());
-        dto.setTitle(book.getTitle());
-        dto.setIsbn(book.getIsbn());
-        dto.setPublishYear(book.getPublishYear());
-        dto.setQuantity(book.getQuantity());
-        dto.setAuthorId(book.getAuthor().getId());
-        dto.setPublisherId(book.getPublisher().getId());
-        dto.setCategoryId(book.getCategory().getId());
-
-        return dto;
-    }
-
-    @GetMapping
-    public String books(Model model) {
-
-        model.addAttribute("books", bookService.getAvailableBooks());
-
-        return "books";
-    }
-
-    @GetMapping("/create")
-    public String createBook(@RequestParam(required = false, defaultValue = "/books") String returnTo,Model model) {
-
-        model.addAttribute("book", new BookDto());
-        model.addAttribute("returnTo", returnTo);
-        model.addAttribute("authors",
-                authorService.getAllAuthors());
-
-        model.addAttribute("publishers",
-                publisherService.getAllPublishers());
-
-        model.addAttribute("categories",
-                categoryService.getAllCategories());
-        return "book-form";
-    }
-
-    @PostMapping("/save")
-    public String saveBook(@ModelAttribute("book") BookDto dto,
-            RedirectAttributes redirectAttributes) {
-
-        Book book;
-
-        if (dto.getId() != null) {
-
-            book = bookService.getBookById(dto.getId());
-            int quantityDifference = dto.getQuantity() - book.getQuantity();
-            if (book.getAvailableQuantity() + quantityDifference < 0) {
-
-                redirectAttributes.addFlashAttribute(
-                        "error",
-                        "Cannot reduce quantity because some books are borrowed.");
-
-                return "redirect:/books/edit/" + dto.getId();
-            }
-            book.setQuantity(dto.getQuantity());
-
-            book.setAvailableQuantity(
-                    book.getAvailableQuantity() + quantityDifference);
-
-        } else {
-
-            book = new Book();
-
+                this.bookService = bookService;
+                this.authorService = authorService;
+                this.publisherService = publisherService;
+                this.categoryService = categoryService;
         }
 
-        book.setTitle(dto.getTitle());
+        private BookDto convertToDto(Book book) {
 
-        book.setIsbn(dto.getIsbn());
+                BookDto dto = new BookDto();
 
-        book.setPublishYear(dto.getPublishYear());
+                dto.setId(book.getId());
+                dto.setTitle(book.getTitle());
+                dto.setIsbn(book.getIsbn());
+                dto.setPublishYear(book.getPublishYear());
+                dto.setQuantity(book.getQuantity());
+                dto.setAuthorId(book.getAuthor().getId());
+                dto.setPublisherId(book.getPublisher().getId());
+                dto.setCategoryId(book.getCategory().getId());
 
-        book.setQuantity(dto.getQuantity());
+                return dto;
+        }
 
-        book.setAuthor(
-                authorService.getAuthorById(dto.getAuthorId()));
+        @GetMapping
+        public String books(Model model) {
 
-        book.setPublisher(
-                publisherService.getPublisherById(dto.getPublisherId()));
+                model.addAttribute("books", bookService.getAvailableBooks());
 
-        book.setCategory(
-                categoryService.getCategoryById(dto.getCategoryId()));
+                return "books";
+        }
 
-        bookService.saveBook(book);
-        redirectAttributes.addFlashAttribute(
-                "success",
-                "Book saved successfully.");
-        return "redirect:/books";
-    }
+        @GetMapping("/create")
+        public String createBook(@RequestParam(required = false) String returnTo, Model model) {
 
-    @GetMapping("/edit/{id}")
-    public String editBook(@PathVariable Long id, Model model) {
+                model.addAttribute("book", new BookDto());
+                model.addAttribute("returnTo", returnTo);
+                model.addAttribute("authors",
+                                authorService.getAllAuthors());
 
-        Book book = bookService.getBookById(id);
+                model.addAttribute("publishers",
+                                publisherService.getAllPublishers());
 
-        BookDto dto = convertToDto(book);
+                model.addAttribute("categories",
+                                categoryService.getAllCategories());
+                return "book-form";
+        }
 
-        model.addAttribute("book", dto);
+        @PostMapping("/save")
+        public String saveBook(@RequestParam(required = false) String returnTo, @ModelAttribute("book") BookDto dto,
+                        RedirectAttributes redirectAttributes) {
 
-        model.addAttribute("authors",
-                authorService.getAllAuthors());
+                Book book;
 
-        model.addAttribute("publishers",
-                publisherService.getAllPublishers());
+                if (dto.getId() != null) {
 
-        model.addAttribute("categories",
-                categoryService.getAllCategories());
+                        book = bookService.getBookById(dto.getId());
+                        int quantityDifference = dto.getQuantity() - book.getQuantity();
+                        if (book.getAvailableQuantity() + quantityDifference < 0) {
 
-        return "book-form";
-    }
+                                redirectAttributes.addFlashAttribute(
+                                                "error",
+                                                "Cannot reduce quantity because some books are borrowed.");
 
-    @GetMapping("/delete/{id}")
-    public String deleteBook(@PathVariable Long id,
-            RedirectAttributes redirectAttributes) {
+                                return "redirect:/books/edit/" + dto.getId();
+                        }
+                        book.setQuantity(dto.getQuantity());
 
-        bookService.deleteBook(id);
-        redirectAttributes.addFlashAttribute(
-                "success",
-                "Book deleted successfully.");
-        return "redirect:/books";
-    }
+                        book.setAvailableQuantity(
+                                        book.getAvailableQuantity() + quantityDifference);
+
+                } else {
+
+                        book = new Book();
+
+                }
+
+                book.setTitle(dto.getTitle());
+
+                book.setIsbn(dto.getIsbn());
+
+                book.setPublishYear(dto.getPublishYear());
+
+                book.setQuantity(dto.getQuantity());
+
+                book.setAuthor(
+                                authorService.getAuthorById(dto.getAuthorId()));
+
+                book.setPublisher(
+                                publisherService.getPublisherById(dto.getPublisherId()));
+
+                book.setCategory(
+                                categoryService.getCategoryById(dto.getCategoryId()));
+
+                bookService.saveBook(book);
+                redirectAttributes.addFlashAttribute(
+                                "success",
+                                "Book saved successfully.");
+                if (returnTo != null && !returnTo.isBlank()) {
+
+                        return "redirect:" + returnTo;
+
+                }
+                return "redirect:/books";
+        }
+
+        @GetMapping("/edit/{id}")
+        public String editBook(@PathVariable Long id, Model model) {
+
+                Book book = bookService.getBookById(id);
+
+                BookDto dto = convertToDto(book);
+
+                model.addAttribute("book", dto);
+
+                model.addAttribute("authors",
+                                authorService.getAllAuthors());
+
+                model.addAttribute("publishers",
+                                publisherService.getAllPublishers());
+
+                model.addAttribute("categories",
+                                categoryService.getAllCategories());
+
+                return "book-form";
+        }
+
+        @GetMapping("/delete/{id}")
+        public String deleteBook(@PathVariable Long id,
+                        RedirectAttributes redirectAttributes) {
+
+                bookService.deleteBook(id);
+                redirectAttributes.addFlashAttribute(
+                                "success",
+                                "Book deleted successfully.");
+                return "redirect:/books";
+        }
 }

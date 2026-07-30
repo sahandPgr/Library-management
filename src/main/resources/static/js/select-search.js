@@ -27,5 +27,24 @@ $(document).ready(function () {
     allowClear:true
 
 });
+$("#userSelect").select2({
 
+    placeholder:"Search user...",
+
+    width:"100%",
+    allowClear:true
+
+
+});
+
+
+$("#bookSelect").select2({
+
+    placeholder:"Search available book...",
+
+    width:"100%",
+    allowClear:true
+
+
+});
 });

@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String createForm(@RequestParam(required = false, defaultValue = "/users") String returnTo, Model model) {
+    public String createForm(@RequestParam(required = false) String returnTo, Model model) {
 
         model.addAttribute("userDto", new UserDto());
         model.addAttribute("roles", UserRole.values());
@@ -51,6 +51,7 @@ public class UserController {
     public String createUser(
             @Valid @ModelAttribute("userDto") UserDto dto,
             RedirectAttributes redirectAttributes,
+            @RequestParam(required = false) String returnTo,
             BindingResult result,
             Model model) {
 
@@ -97,13 +98,18 @@ public class UserController {
                     "error",
                     "Failed to create user.");
         }
+        if (returnTo != null && !returnTo.isBlank()) {
 
+            return "redirect:" + returnTo;
+
+        }
         return "redirect:/users";
     }
 
     @GetMapping("/edit/{id}")
     public String editForm(
             @PathVariable Long id,
+            @RequestParam(required = false) String returnTo,
             Model model) {
 
         User user = userService.getUserById(id);
@@ -125,7 +131,7 @@ public class UserController {
         model.addAttribute(
                 "roles",
                 UserRole.values());
-
+        model.addAttribute("returnTo", returnTo);
         return "user-form";
     }
 

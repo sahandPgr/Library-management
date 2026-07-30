@@ -30,7 +30,8 @@ public class PublisherController {
     }
 
     @GetMapping("/create")
-    public String showCreateForm(@RequestParam(required = false, defaultValue = "/publishers") String returnTo,Model model) {
+    public String showCreateForm(@RequestParam(required = false, defaultValue = "/publishers") String returnTo,
+            Model model) {
         model.addAttribute("publisher", new Publisher());
         model.addAttribute("returnTo", returnTo);
         return "publisher-form";
@@ -59,11 +60,14 @@ public class PublisherController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    public String showEditForm(@PathVariable Long id,
+            @RequestParam(required = false) String returnTo,
+            Model model) {
 
         model.addAttribute(
                 "publisher",
                 publisherService.getPublisherById(id));
+        model.addAttribute("returnTo", returnTo);
 
         return "publisher-form";
     }

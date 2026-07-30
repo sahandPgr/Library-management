@@ -40,7 +40,7 @@
 
                     <td th:text="${category.name}"></td>
                     <td>
-                        <a th:href="@{/categories/edit/{id}(id=${category.id})}" class="btn btn-warning btn-sm">
+                        <a th:href="@{/categories/edit/{id}(id=${category.id},returnTo='/categories')}" class="btn btn-warning btn-sm">
                             Edit
                         </a>
                         <a href="#" th:data-url="@{/categories/delete/{id}(id=${category.id})}"
