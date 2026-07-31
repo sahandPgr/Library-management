@@ -17,18 +17,24 @@ public class CategoryService {
     }
 
     public List<Category> getAllCategories() {
-        return repository.findAll();
+        return repository.findAllByOrderByIdAsc();
     }
-    
+
     public Category saveCategory(Category category) {
+        if (repository.existsByNameIgnoreCase(category.getName().trim())) {
+            throw new IllegalArgumentException(
+                    "Category already exists.");
+        }
+
+        category.setName(category.getName().trim());
         return repository.save(category);
-}
+    }
 
     public Category getCategoryById(Long id) {
-    return repository.findById(id).orElse(null);
-}
+        return repository.findById(id).orElse(null);
+    }
 
     public void deleteCategory(Long id) {
-    repository.deleteById(id);
-}
+        repository.deleteById(id);
+    }
 }
