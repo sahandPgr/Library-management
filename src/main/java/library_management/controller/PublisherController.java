@@ -40,23 +40,40 @@ public class PublisherController {
     @PostMapping("/save")
     public String savePublisher(
             @ModelAttribute("publisher") Publisher publisher,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam(required = false) String returnTo,
+            RedirectAttributes redirectAttributes, Model model) {
 
         boolean isNew = publisher.getId() == null;
 
-        publisherService.savePublisher(publisher);
+        try {
+            publisherService.savePublisher(publisher);
+            if (isNew) {
+                redirectAttributes.addFlashAttribute(
+                        "success",
+                        "Publisher created successfully.");
+            } else {
+                redirectAttributes.addFlashAttribute(
+                        "success",
+                        "Publisher updated successfully.");
+            }
+            if (returnTo != null && !returnTo.isBlank()) {
+                return "redirect:" + returnTo;
+            }
 
-        if (isNew) {
-            redirectAttributes.addFlashAttribute(
-                    "success",
-                    "Publisher created successfully.");
-        } else {
-            redirectAttributes.addFlashAttribute(
-                    "success",
-                    "Publisher updated successfully.");
+            return "redirect:/publishers";
+
+        } catch (IllegalArgumentException e) {
+            model.addAttribute(
+                    "error",
+                    e.getMessage());
+
+            model.addAttribute(
+                    "returnTo",
+                    returnTo);
+
+            return "publisher-form";
         }
 
-        return "redirect:/publishers";
     }
 
     @GetMapping("/edit/{id}")

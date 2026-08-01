@@ -43,7 +43,8 @@ public class CategoryController {
     @PostMapping("/save")
     public String saveCategory(
             @ModelAttribute("category") Category category,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam(required = false) String returnTo,
+            RedirectAttributes redirectAttributes, Model model) {
 
         boolean isNew = category.getId() == null;
 
@@ -65,14 +66,27 @@ public class CategoryController {
 
             }
 
-        } catch (Exception e) {
-
-            redirectAttributes.addFlashAttribute(
-                    "error",
-                    "Failed to save category.");
+        if (returnTo != null && !returnTo.isBlank()) {
+            return "redirect:" + returnTo;
         }
 
         return "redirect:/categories";
+
+        } catch (IllegalArgumentException e) {
+
+        model.addAttribute(
+                "error",
+                e.getMessage()
+        );
+
+        model.addAttribute(
+                "returnTo",
+                returnTo
+        );
+
+        return "category-form";
+    }
+        
     }
 
     @GetMapping("/edit/{id}")

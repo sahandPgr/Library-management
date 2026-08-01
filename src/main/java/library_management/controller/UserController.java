@@ -70,7 +70,9 @@ public class UserController {
             model.addAttribute(
                     "roles",
                     UserRole.values());
-
+            model.addAttribute(
+                    "returnTo",
+                    returnTo);
             return "user-form";
         }
 
@@ -91,19 +93,29 @@ public class UserController {
             redirectAttributes.addFlashAttribute(
                     "success",
                     "User create successfully.");
+            if (returnTo != null && !returnTo.isBlank()) {
 
-        } catch (Exception e) {
+                return "redirect:" + returnTo;
+            }
 
-            redirectAttributes.addFlashAttribute(
+            return "redirect:/users";
+
+        } catch (IllegalArgumentException e) {
+
+            model.addAttribute(
                     "error",
-                    "Failed to create user.");
-        }
-        if (returnTo != null && !returnTo.isBlank()) {
+                    e.getMessage());
 
-            return "redirect:" + returnTo;
+            model.addAttribute(
+                    "roles",
+                    UserRole.values());
 
+            model.addAttribute(
+                    "returnTo",
+                    returnTo);
+
+            return "user-form";
         }
-        return "redirect:/users";
     }
 
     @GetMapping("/edit/{id}")

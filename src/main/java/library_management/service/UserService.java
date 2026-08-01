@@ -11,54 +11,52 @@ import library_management.repository.UserRepository;
 @Service
 public class UserService {
 
-
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository repository,
-                       PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder) {
 
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
 
-
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
 
         return repository.findAll();
 
     }
 
+    public User getUserById(Long id) {
 
-    public User getUserById(Long id){
-
-          return repository.findById(id)
-            .orElseThrow(() ->
-                new RuntimeException("User not found")
-            );
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
     }
 
     public void save(User user) {
-
+        if (repository.existsByEmail(user.getEmail().trim())) {
+            throw new IllegalArgumentException(
+                    "Email already exists.");
+        }
         if (user.getPassword() != null &&
                 !user.getPassword().isBlank()) {
 
             user.setPassword(
-                    passwordEncoder.encode(user.getPassword())
-            );
+                    passwordEncoder.encode(user.getPassword()));
         }
-
+        user.setEmail(user.getEmail().trim());
         repository.save(user);
     }
 
     public void delete(Long id) {
         repository.deleteById(id);
     }
-    public long countUsers(){
 
-    return repository.count();
+    public long countUsers() {
 
-}
+        return repository.count();
+
+    }
 
 }

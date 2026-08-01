@@ -47,7 +47,8 @@ public class AuthorController {
     @PostMapping("/save")
     public String saveAuthor(
             @ModelAttribute("author") Author author,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam(required = false) String returnTo,
+            RedirectAttributes redirectAttributes, Model model) {
 
         boolean isNew = author.getId() == null;
 
@@ -69,14 +70,27 @@ public class AuthorController {
 
             }
 
-        } catch (Exception e) {
-
-            redirectAttributes.addFlashAttribute(
-                    "error",
-                    "Failed to save author.");
+        if (returnTo != null && !returnTo.isBlank()) {
+            return "redirect:" + returnTo;
         }
 
         return "redirect:/authors";
+
+        } catch (IllegalArgumentException e) {
+
+        model.addAttribute(
+                "error",
+                e.getMessage()
+        );
+
+        model.addAttribute(
+                "returnTo",
+                returnTo
+        );
+
+        return "author-form";
+    }
+
     }
 
     @GetMapping("/edit/{id}")

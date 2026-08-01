@@ -21,6 +21,14 @@ public class AuthorService {
     }
 
     public Author saveAuthor(Author author) {
+        if (repository.existsByFullNameIgnoreCase(
+                author.getFullName().trim())) {
+
+            throw new IllegalArgumentException(
+                    "Author already exists.");
+        }
+
+        author.setFullName(author.getFullName().trim());
         return repository.save(author);
     }
 

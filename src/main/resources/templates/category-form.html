@@ -15,6 +15,7 @@
         <h2>Add Category</h2>
 
         <form th:action="@{/categories/save}" th:object="${category}" method="post">
+            <input type="hidden" name="returnTo" th:value="${returnTo}">
             <input type="hidden" th:field="*{id}">
             <div class="mb-3">
 
@@ -28,7 +29,8 @@
                 Save
             </button>
 
-            <a th:href="${returnTo != null && !returnTo.isBlank() ? returnTo : '/categories'}" class="btn btn-secondary">
+            <a th:href="${returnTo != null && !returnTo.isBlank() ? returnTo : '/categories'}"
+                class="btn btn-secondary">
                 Back
             </a>
 
@@ -36,6 +38,7 @@
 
     </div>
     <script th:src="@{/js/app.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

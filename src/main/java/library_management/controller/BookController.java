@@ -80,60 +80,92 @@ public class BookController {
 
         @PostMapping("/save")
         public String saveBook(@RequestParam(required = false) String returnTo, @ModelAttribute("book") BookDto dto,
-                        RedirectAttributes redirectAttributes) {
+                        RedirectAttributes redirectAttributes, Model model) {
 
                 Book book;
+                boolean isNew = dto.getId() == null;
+                try {
+                        if (isNew) {
+                                book = new Book();
+                                                        redirectAttributes.addFlashAttribute(
+                                        "success",
+                                        "Book saved successfully.");
 
-                if (dto.getId() != null) {
+                        } else {
 
-                        book = bookService.getBookById(dto.getId());
-                        int quantityDifference = dto.getQuantity() - book.getQuantity();
-                        if (book.getAvailableQuantity() + quantityDifference < 0) {
+                                book = bookService.getBookById(dto.getId());
+                                int quantityDifference = dto.getQuantity() - book.getQuantity();
+                                if (book.getAvailableQuantity() + quantityDifference < 0) {
 
-                                redirectAttributes.addFlashAttribute(
-                                                "error",
-                                                "Cannot reduce quantity because some books are borrowed.");
+                                        redirectAttributes.addFlashAttribute(
+                                                        "error",
+                                                        "Cannot reduce quantity because some books are borrowed.");
 
-                                return "redirect:/books/edit/" + dto.getId();
+                                        return "redirect:/books/edit/" + dto.getId();
+                                }
+                                book.setQuantity(dto.getQuantity());
+
+                                book.setAvailableQuantity(
+                                                book.getAvailableQuantity() + quantityDifference);
+                                                        redirectAttributes.addFlashAttribute(
+                                        "success",
+                                        "Book updated successfully.");
+
                         }
+
+                        book.setTitle(dto.getTitle());
+
+                        book.setIsbn(dto.getIsbn());
+
+                        book.setPublishYear(dto.getPublishYear());
+
                         book.setQuantity(dto.getQuantity());
 
-                        book.setAvailableQuantity(
-                                        book.getAvailableQuantity() + quantityDifference);
+                        book.setAuthor(
+                                        authorService.getAuthorById(dto.getAuthorId()));
 
-                } else {
+                        book.setPublisher(
+                                        publisherService.getPublisherById(dto.getPublisherId()));
 
-                        book = new Book();
+                        book.setCategory(
+                                        categoryService.getCategoryById(dto.getCategoryId()));
 
+                        bookService.saveBook(book);
+
+                        if (returnTo != null && !returnTo.isBlank()) {
+
+                                return "redirect:" + returnTo;
+
+                        }
+                        return "redirect:/books";
+                } catch (IllegalArgumentException e) {
+                        model.addAttribute(
+                                        "error",
+                                        e.getMessage());
+
+                        model.addAttribute(
+                                        "returnTo",
+                                        returnTo);
+
+                        model.addAttribute(
+                                        "authors",
+                                        authorService.getAllAuthors());
+
+                        model.addAttribute(
+                                        "publishers",
+                                        publisherService.getAllPublishers());
+
+                        model.addAttribute(
+                                        "categories",
+                                        categoryService.getAllCategories());
+
+                        model.addAttribute(
+                                        "editMode",
+                                        dto.getId() != null);
+
+                        return "book-form";
                 }
 
-                book.setTitle(dto.getTitle());
-
-                book.setIsbn(dto.getIsbn());
-
-                book.setPublishYear(dto.getPublishYear());
-
-                book.setQuantity(dto.getQuantity());
-
-                book.setAuthor(
-                                authorService.getAuthorById(dto.getAuthorId()));
-
-                book.setPublisher(
-                                publisherService.getPublisherById(dto.getPublisherId()));
-
-                book.setCategory(
-                                categoryService.getCategoryById(dto.getCategoryId()));
-
-                bookService.saveBook(book);
-                redirectAttributes.addFlashAttribute(
-                                "success",
-                                "Book saved successfully.");
-                if (returnTo != null && !returnTo.isBlank()) {
-
-                        return "redirect:" + returnTo;
-
-                }
-                return "redirect:/books";
         }
 
         @GetMapping("/edit/{id}")
