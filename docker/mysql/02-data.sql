@@ -1,8 +1,7 @@
 INSERT INTO users
     (full_name,email,password,role)
 VALUES
-    ('Ali Ahmadi', 'ali@test.com', '1234', 'ADMIN'),
-    ('Sara Mohammadi', 'sara@test.com', '1234', 'LIBRARIAN');
+    ('admin', 'admin@test.com', '$2a$10$8QvJPWjbW.nHNK1ZFEU/OeXiq7qCrAVoCDETtjocCmhHdQzpM.YxW', 'ADMIN');
 
 INSERT INTO authors
     (full_name,nationality,birth_date)
