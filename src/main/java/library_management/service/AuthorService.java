@@ -21,14 +21,22 @@ public class AuthorService {
     }
 
     public Author saveAuthor(Author author) {
-        if (repository.existsByFullNameIgnoreCase(
-                author.getFullName().trim())) {
+        author.setFullName(author.getFullName().trim());
+        boolean exists;
 
-            throw new IllegalArgumentException(
-                    "Author already exists.");
+        if (author.getId() == null) {
+            exists = repository.existsByFullNameIgnoreCase(
+                    author.getFullName());
+        } else {
+            exists = repository.existsByFullNameIgnoreCaseAndIdNot(
+                    author.getFullName(),
+                    author.getId());
         }
 
-        author.setFullName(author.getFullName().trim());
+        if (exists) {
+            throw new IllegalArgumentException(
+                    "Publisher already exists.");
+        }
         return repository.save(author);
     }
 

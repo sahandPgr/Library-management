@@ -6,4 +6,5 @@ import library_management.entity.Author;
 
 public interface AuthorRepository extends JpaRepository<Author, Long> {
     boolean existsByFullNameIgnoreCase(String fullName);
+    boolean existsByFullNameIgnoreCaseAndIdNot(String fullName, Long id);
 }

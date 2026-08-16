@@ -21,14 +21,22 @@ public class PublisherService {
     }
 
     public Publisher savePublisher(Publisher publisher) {
-        if (repository.existsByNameIgnoreCase(
-                publisher.getName().trim())) {
+        publisher.setName(publisher.getName().trim());
 
+        boolean exists;
+        if (publisher.getId() == null) {
+            exists = repository.existsByNameIgnoreCase(
+                    publisher.getName());
+        } else {
+            exists = repository.existsByNameIgnoreCaseAndIdNot(
+                    publisher.getName(),
+                    publisher.getId());
+        }
+        if (exists) {
             throw new IllegalArgumentException(
                     "Publisher already exists.");
         }
 
-        publisher.setName(publisher.getName().trim());
         return repository.save(publisher);
     }
 
