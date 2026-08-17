@@ -87,9 +87,9 @@ public class BookController {
                 try {
                         if (isNew) {
                                 book = new Book();
-                                                        redirectAttributes.addFlashAttribute(
-                                        "success",
-                                        "Book saved successfully.");
+                                redirectAttributes.addFlashAttribute(
+                                                "success",
+                                                "Book saved successfully.");
 
                         } else {
 
@@ -107,9 +107,9 @@ public class BookController {
 
                                 book.setAvailableQuantity(
                                                 book.getAvailableQuantity() + quantityDifference);
-                                                        redirectAttributes.addFlashAttribute(
-                                        "success",
-                                        "Book updated successfully.");
+                                redirectAttributes.addFlashAttribute(
+                                                "success",
+                                                "Book updated successfully.");
 
                         }
 
@@ -192,11 +192,17 @@ public class BookController {
         @GetMapping("/delete/{id}")
         public String deleteBook(@PathVariable Long id,
                         RedirectAttributes redirectAttributes) {
+                try {
+                        bookService.deleteBook(id);
+                        redirectAttributes.addFlashAttribute(
+                                        "success",
+                                        "Book deleted successfully.");
+                } catch (Exception e) {
+                        redirectAttributes.addFlashAttribute(
+                                        "error",
+                                        "Cannot delete book because it is used by one or more users.");
+                }
 
-                bookService.deleteBook(id);
-                redirectAttributes.addFlashAttribute(
-                                "success",
-                                "Book deleted successfully.");
                 return "redirect:/books";
         }
 }
